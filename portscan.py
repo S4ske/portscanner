@@ -1,7 +1,8 @@
-from typer import Typer, Option, Argument, echo
+from typer import Typer, Option, Argument, echo, run
 from typing import Iterable
 from portscanner import PortScanner
 from utils import Protocol
+from response_builder import ResponseBuilder
 
 app = Typer()
 
@@ -48,22 +49,22 @@ def portscan(
         None, help="Протоколы и порты для сканирования, например, tcp/80 или udp/53-100"
     ),
     timeout: int = Option(2, "--timeout"),
-    verbose: bool = Option(False, "--verbose", "-v", help="Включить подробный вывод"),
+    verbose: bool = Option(False, "--verbose", "-v", help="Включить подробный вывод", is_flag=True),
     guess: bool = Option(
-        False, "--guess", "-g", help="Включить определение прикладного протокола"
+        False, "--guess", "-g", help="Включить определение прикладного протокола", is_flag=True
     ),
 ) -> None:
     """
     Утилита для сканирования портов на заданном IP-адресе.
     """
-
     echo(f"Сканирование IP-адреса: {ip_address}")
 
-    port_scanner = PortScanner(timeout, verbose, guess, True)
+    port_scanner = PortScanner(timeout, verbose, guess)
+    response_builder = ResponseBuilder()
 
     for response_string in port_scanner.scan(ip_address, parse_ports(scan_targets)):
-        echo(response_string)
+        echo(response_builder.build_response(response_string))
 
 
 if __name__ == "__main__":
-    portscan("127123", ["tcp/80", "tcp/12000-12500", "udp/3000-3100,3200,3300-4000"])
+    run(portscan)

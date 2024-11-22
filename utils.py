@@ -1,13 +1,9 @@
 from dataclasses import dataclass
 from typing import Literal
 from datetime import timedelta
-import logging
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
-logger = logging.getLogger(__name__)
 
 Protocol = Literal["TCP", "UDP"]
-ApplicationProtocol = Literal["HTTP", "DNS", "ECHO", "UNKNOWN"]
+ApplicationProtocol = Literal["HTTP", "ECHO", "UNKNOWN"]
 
 
 @dataclass

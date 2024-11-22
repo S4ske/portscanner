@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 typer = "^0.13.0"
+scapy = "^2.6.1"
 
 
 [tool.poetry.group.dev.dependencies]
